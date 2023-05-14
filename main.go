@@ -16,7 +16,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	
+
 	w.Write([]byte("Hello from Snippetbox"))
 }
 
@@ -27,6 +27,15 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 
 // Add a snippetCreate handler function
 func snippetCreate(w http.ResponseWriter, r *http.Request) {
+	// Use r.Method to check whether the request is using POST or not.
+	if r.Method != "POST" {
+		w.Header().Set("Allow", http.MethodPost)
+		// Use the http.Error() function to send a 405 status code and "Method Not
+		// Allowed" string as the response body.
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	w.Write([]byte("Create a new snippet..."))
 }
 
