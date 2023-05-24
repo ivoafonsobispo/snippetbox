@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	// New import
-	// New import
 	"snippetbox.ivoafonsobispo.io/internal/models"
 	"snippetbox.ivoafonsobispo.io/internal/validator" // New import
 
@@ -58,10 +56,6 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 
-	// Initialize a new createSnippetForm instance and pass it to the template.
-	// Notice how this is also a great opportunity to set any default or
-	// 'initial' values for the form --- here we set the initial value for the
-	// snippet expiry to 365 days.
 	data.Form = snippetCreateForm{
 		Expires: 365,
 	}
@@ -69,11 +63,6 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	app.render(w, http.StatusOK, "create.tmpl", data)
 }
 
-// Update our snippetCreateForm struct to include struct tags which tell the
-// decoder how to map HTML form values into the different struct fields. So, for
-// example, here we're telling the decoder to store the value from the HTML form
-// input with the name "title" in the Title field. The struct tag `form:"-"`
-// tells the decoder to completely ignore a field during decoding.
 type snippetCreateForm struct {
 	Title               string `form:"title"`
 	Content             string `form:"content"`
@@ -108,9 +97,27 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// Use the Put() method to add a string value ("Snippet successfully
-	// created!") and the corresponding key ("flash") to the session data.
 	app.sessionManager.Put(r.Context(), "flash", "Snippet successfully created!")
 
 	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
+}
+
+func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintln(w, "Display a HTML form for signing up a new user...")
+}
+
+func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintln(w, "Create a new user...")
+}
+
+func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintln(w, "Display a HTML form for logging in a user...")
+}
+
+func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintln(w, "Authenticate and login the user...")
+}
+
+func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintln(w, "Logout the user...")
 }
