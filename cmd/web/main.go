@@ -18,6 +18,7 @@ import (
 )
 
 type Application struct {
+	debug          bool
 	logger         *slog.Logger
 	snippets       models.SnippetModelInterface // Use our new interface type.
 	users          models.UserModelInterface    // Use our new interface type.
@@ -29,6 +30,7 @@ type Application struct {
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	debug := flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil)) // This can also be in JSON
@@ -56,6 +58,7 @@ func main() {
 	sessionManager.Cookie.Secure = true
 
 	app := &Application{
+		debug:          *debug,
 		logger:         logger,
 		snippets:       &models.SnippetModel{DB: db},
 		users:          &models.UserModel{DB: db},
