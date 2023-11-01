@@ -244,7 +244,7 @@ func (app *Application) accountView(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 	data.User = user
 
-	app.render(w, r, http.StatusOK, "view.html", data)
+	app.render(w, r, http.StatusOK, "account.html", data)
 }
 
 func ping(w http.ResponseWriter, r *http.Request) {
